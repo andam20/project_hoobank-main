@@ -87,13 +87,13 @@ export default function CustomersDemo() {
 
     const [sayd, setSayd]  = useState([])
     useEffect(()=>{
-        fetch('http://localhost:8000/api/expense')
+        fetch('https://add1-185-106-28-202.ngrok-free.app/api/expense', {mode : 'cors'})
             .then(response => response.json())
             .then(json => setSayd(json))
             .catch(e=>console.log(e))
     },[])
 
-    console.log(sayd.id)
+    console.log(sayd)
 
     const getCustomers = (data) => {
         return [...(data || [])].map((d) => {
