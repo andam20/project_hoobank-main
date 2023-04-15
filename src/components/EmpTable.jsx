@@ -24,7 +24,7 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";                                         
 
 export default function CustomersDemo() {
-    const [customers, setCustomers] = useState([]);
+    const [expenses, setExpenses] = useState([]);
     const [selectedCustomers, setSelectedCustomers] = useState([]);
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -40,7 +40,7 @@ export default function CustomersDemo() {
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [representatives] = useState([
         { name: 'Food', image: '' },
-        { name: 'Feul', image: '' },
+        { name: 'feul', image: '' },
         { name: 'Mobile Card', image: '' },
         { name: 'Car Service', image: '' },
         { name: 'Travel', image: '' },
@@ -66,14 +66,14 @@ export default function CustomersDemo() {
         }
     };
 
-    const [payedBack] = useState(['Payed Back', 'Not Payed Back']);
+    const [payedBack] = useState(['Paid Back', 'Not Paid Back']);
 
     const getSeverity2 = (pb) => {
         switch (pb) {
-            case 'Not Payed Back':
+            case 'Not Paid Back':
                 return 'danger';
 
-            case 'Payed Back':
+            case 'Paid Back':
                 return 'success';
 
         }
@@ -85,34 +85,39 @@ export default function CustomersDemo() {
     //     CustomerService.getCustomersLarge().then((data) => setCustomers(getCustomers(data)));
     // }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const [sayd, setSayd]  = useState([])
     useEffect(()=>{
-        fetch('https://add1-185-106-28-202.ngrok-free.app/api/expense', {mode : 'cors'})
+        fetch('http://192.168.1.13/collage-project/public/api/expense')
             .then(response => response.json())
-            .then(json => setSayd(json))
+            .then(json => setExpenses(json))
             .catch(e=>console.log(e))
     },[])
 
-    console.log(sayd)
+    console.log(expenses)
+    
 
-    const getCustomers = (data) => {
-        return [...(data || [])].map((d) => {
+
+
+    const getExpenses = (sayd) => {
+        return [...(sayd || [])].map((d) => {
             d.date = new Date(d.date);
 
             return d;
         });
     };
 
+
     const formatDate = (value) => {
-        return value.toLocaleDateString('en-US', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-        });
+        // return value.toLocaleDateString('en-US', {
+        //     day: '2-digit',
+        //     month: '2-digit',
+        //     year: 'numeric'
+        // });
+        return value;
     };
 
     const formatCurrency = (value) => {
-        return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+        // return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+        return value;
     };
 
     const onGlobalFilterChange = (e) => {
@@ -128,7 +133,7 @@ export default function CustomersDemo() {
     const renderHeader = () => {
         return (
             <div className="flex flex-wrap gap-2 justify-content-between align-items-center">
-                <h4 className="m-0">Customers</h4>
+                <h4 className="m-0">Expenses</h4>
                 <span className="p-input-icon-left">
                     <i className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
@@ -151,8 +156,8 @@ export default function CustomersDemo() {
 
         return (
             <div className="flex align-items-center gap-2">
-                <img alt={representative.name} src={`https://primefaces.org/cdn/primereact/images/avatar/${representative.image}`} width="32" />
-                <span>{representative.name}</span>
+                {/* <img alt={representative.name} src={`https://primefaces.org/cdn/primereact/images/avatar/${representative.image}`} width="32" /> */}
+                <span>{representative}</span>
             </div>
         );
     };
@@ -160,7 +165,7 @@ export default function CustomersDemo() {
     const representativeFilterTemplate = (options) => {
         return (
             <React.Fragment>
-                <div className="mb-3 font-bold">Agent Picker</div>
+                <div className="mb-3 font-bold">Category Picker</div>
                 <MultiSelect value={options.value} options={representatives} itemTemplate={representativesItemTemplate} onChange={(e) => options.filterCallback(e.value)} optionLabel="name" placeholder="Any" className="p-column-filter" />
             </React.Fragment>
         );
@@ -208,7 +213,7 @@ export default function CustomersDemo() {
     };
 
     const pbFilterTemplate = (options) => {
-        return <Dropdown value={options.value} options={payedBack} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={pbItemTemplate} placeholder="Select One" className="p-column-filter" showClear />;
+        return <Dropdown value={options.value} options={paid_back} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={pbItemTemplate} placeholder="Select One" className="p-column-filter" showClear />;
     };
 
     const pbItemTemplate = (option) => {
@@ -224,19 +229,19 @@ export default function CustomersDemo() {
 
     return (
         <div className="card">
-            <DataTable value={customers} paginator header={header} rows={10}
+            <DataTable value={expenses} paginator header={header} rows={10}
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     rowsPerPageOptions={[10, 25, 50]} dataKey="id" selectionMode="checkbox" selection={selectedCustomers} onSelectionChange={(e) => setSelectedCustomers(e.value)}
-                    filters={filters} filterDisplay="menu" globalFilterFields={['name', 'country.name', 'representative.name', 'balance', 'status']}
+                    filters={filters} filterDisplay="menu" globalFilterFields={['category','description','balance', 'status','paid_back','created_at']}
                     emptyMessage="No Expenses Found." currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
-                <Column header="Category" sortable sortField="representative.name" filterField="representative" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }}
+                <Column field='category' header="Category" sortable sortField="representative.name" filterField="representative" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }}
                     style={{ minWidth: '14rem' }} body={representativeBodyTemplate} filter filterElement={representativeFilterTemplate} />
-                <Column field="name" header="Discription" sortable filter filterPlaceholder="Search by name" style={{ minWidth: '14rem' }} />
+                <Column field="description" header="Description" sortable filter filterPlaceholder="Search by name" style={{ minWidth: '14rem' }} />
                 <Column field="balance" header="Ammount" sortable dataType="numeric" style={{ minWidth: '12rem' }} body={balanceBodyTemplate} filter filterElement={balanceFilterTemplate} />
                 <Column field="status" header="Status" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
-                <Column field="pb" header="Payed Back?" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={pbBodyTemplate} filter filterElement={pbFilterTemplate} />                
-                <Column field="date" header="Date" sortable filterField="date" dataType="date" style={{ minWidth: '12rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
-                <Column headerStyle={{ width: '5rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyTemplate} />
+                <Column field="paid_back" header="Paid Back?" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={pbBodyTemplate} filter filterElement={pbFilterTemplate} />                
+                <Column field="created_at" header="Date" sortable filterField="date" dataType="date" style={{ minWidth: '12rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
+                {/* <Column headerStyle={{ width: '5rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyTemplate} /> */}
             </DataTable>         
         </div>
     );

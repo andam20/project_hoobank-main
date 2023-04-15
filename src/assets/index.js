@@ -23,7 +23,7 @@ import twitter from "./twitter.svg";
 import people01 from "./people01.png";
 import people02 from "./people02.png";
 import people03 from "./people03.png";
-import feul from "./feul.png";
+import feul from "./fuel.png";
 import food from "./food.png";
 import sim from "./sim.png";
 import profile from "./profile.jpg";

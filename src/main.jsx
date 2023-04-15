@@ -7,6 +7,7 @@ import Accountant from './Accountant';
 import AddExpense from './AddExpense';
 import Account from './Account';
 import Expense from './Expense';
+import Login from './Login';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -37,6 +38,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route
          path='/Expense'
          Component={Expense}
+         key={Math.random()}
+          />
+          <Route
+         path='/Login'
+         Component={Login}
          key={Math.random()}
           />
       </Routes>

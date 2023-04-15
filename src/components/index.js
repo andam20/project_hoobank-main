@@ -12,6 +12,7 @@ import EmpTable from "./EmpTable"
 import addExpenseForm from "./addExpenseForm";
 import AccountEdit from "./AccountEdit";
 import AccountInfo from "./AccountInfo";
+import LoginForm from "./LoginForm";
 
 export {
     Navbar,
@@ -27,5 +28,6 @@ export {
     EmpTable,
     addExpenseForm,
     AccountInfo,
-    AccountEdit
+    AccountEdit,
+    LoginForm
 };
