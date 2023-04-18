@@ -65,8 +65,16 @@ export default function Business()  {
           Authorization: `Bearer ${token}`,
         },
       })
+      
         .then(response => response.json())
-        .then(json => setExpenses(json))
+        .then(json => {
+          console.log(json)
+          json.category
+          Object.keys(json).map(key=>{
+            const a = json[key]
+            console.log(a)
+          })
+          setExpenses(json)})
         .catch(e => console.log(e));
     }
   },[history]);
