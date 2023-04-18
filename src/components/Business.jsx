@@ -1,8 +1,9 @@
 import { features } from "../constants";
 import styles, { layout } from "../style";
 import Button from "./Button";
-import { Link } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
+
 
 
 const FeatureCard = ({ icon, category, date, description, status, paid_back, amount, index, hiwa }) => (
@@ -47,13 +48,29 @@ const FeatureCard = ({ icon, category, date, description, status, paid_back, amo
 export default function Business()  {
 
 
-const [expenses, setExpenses] = useState([]);
-useEffect(()=>{
-  fetch('http://192.168.1.13/collage-project/public/api/last-four')
-      .then(response => response.json())
-      .then(json => setExpenses(json))
-      .catch(e=>console.log(e))
-},[]);
+// const [expenses, setExpenses] = useState([]);
+
+
+
+// const history = useHistory();
+
+  const [expenses, setExpenses] = useState([]);
+  useEffect(()=>{
+    const token = localStorage.getItem("token");
+    if (!token) {
+      history.push("/login");
+    } else {
+      fetch('http://192.168.1.92/collage-project/public/api/last-four', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then(response => response.json())
+        .then(json => setExpenses(json))
+        .catch(e => console.log(e));
+    }
+  },[history]);
+
   return(
   <section id="features" className={`flex-col ${styles.paddingY}`}>
     <Link to='/accountant'>

@@ -86,7 +86,7 @@ export default function CustomersDemo() {
     // }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(()=>{
-        fetch('http://192.168.1.13/collage-project/public/api/expense')
+        fetch('http://192.168.1.92/collage-project/public/api/expense')
             .then(response => response.json())
             .then(json => setExpenses(json))
             .catch(e=>console.log(e))
@@ -189,7 +189,7 @@ export default function CustomersDemo() {
     };
 
     const balanceBodyTemplate = (rowData) => {
-        return formatCurrency(rowData.balance);
+        return formatCurrency(rowData.ammount);
     };
 
     const balanceFilterTemplate = (options) => {

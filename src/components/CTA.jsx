@@ -79,12 +79,12 @@ return (
     }
   })
 
-  const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(formData)
-};
-  fetch("http://127.0.0.1:8000/expense",requestOptions).then(res=>console.log(res))
+//   const requestOptions = {
+//     method: 'POST',
+//     headers: { 'Content-Type': 'application/json' },
+//     body: JSON.stringify(formData)
+// };
+//   fetch("http://192.168.1.92/collage-project/public/api/expense",requestOptions).then(res=>console.log(res))
 }
   }>
     <div class="mb-6">
