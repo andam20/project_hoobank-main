@@ -9,7 +9,26 @@ import {profile} from '../assets';
 
 
 
-const AccountInfo = () => (
+const AccountInfo = () => {
+
+  const [expenses, setExpenses] = useState([]);
+  useEffect(()=>{
+    const token = localStorage.getItem("token");
+    if (!token) {
+      history.push("/login");
+    } else {
+      fetch('http://192.168.1.92/collage-project/public/api/last-four', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then(response => response.json())
+        .then(json => setExpenses(json))
+        .catch(e => console.log(e));
+    }
+  },[history]);
+
+return(
   <section className={`${styles.flexCenter} ${styles.marginY} ${styles.padding} sm:flex-row flex-col bg-black-gradient-2 rounded-[20px] box-shadow`}>
 
 
@@ -18,6 +37,8 @@ const AccountInfo = () => (
       <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
       <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Job Title:</label>
       <p className={`${styles.paragraph} max-w-[470px] `}>Software Engineer</p>
+      <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-5">Company:</label>
+      <p className={`${styles.paragraph} max-w-[470px] `}>KOYA Company</p>
       <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-5">Salary:</label>
       <p className={`${styles.paragraph} max-w-[470px] `}>1,200,000 IQD</p>
       <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-5">Employment Time</label>
@@ -29,6 +50,6 @@ const AccountInfo = () => (
     </div>
   </section>
 );
-
+}
 
 export default AccountInfo;
