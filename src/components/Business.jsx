@@ -2,7 +2,7 @@ import { features } from "../constants";
 import styles, { layout } from "../style";
 import Button from "./Button";
 import React, { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 
@@ -52,15 +52,15 @@ export default function Business()  {
 
 
 
-// const history = useHistory();
+const navigate = useNavigate();
 
   const [expenses, setExpenses] = useState([]);
   useEffect(()=>{
     const token = localStorage.getItem("token");
     if (!token) {
-      history.push("/login");
+      window.location.href = '/login';
     } else {
-      fetch('http://192.168.1.92/collage-project/public/api/last-four', {
+      fetch('http://192.168.1.109/collage-project/public/api/last-four', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -77,7 +77,7 @@ export default function Business()  {
           setExpenses(json)})
         .catch(e => console.log(e));
     }
-  },[history]);
+  },[navigate]);
 
   return(
   <section id="features" className={`flex-col ${styles.paddingY}`}>
@@ -92,12 +92,14 @@ export default function Business()  {
 
 
     <div className={`${layout.sectionImg} md:flex-row flex-col`}>
-      {expenses.map((feature, index) => (
-        <Link to='/Expense'>
-        <FeatureCard key={feature.id} hiwa={feature.category} {...feature} index={index} />
-        </Link>
-      ))}
-    </div>
+  {expenses.map((feature, index) => (
+    <Link key={feature.id} to={`/Expense/${feature.id}`}>
+      <FeatureCard hiwa={feature.category} {...feature} index={index} />
+    </Link>
+  ))}
+</div>
+
+
   </section>
   );
 }

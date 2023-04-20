@@ -36,7 +36,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
          key={Math.random()}
           />
           <Route
-         path='/Expense'
+         path='/Expense/:id'
          Component={Expense}
          key={Math.random()}
           />

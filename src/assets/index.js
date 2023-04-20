@@ -28,6 +28,7 @@ import food from "./food.png";
 import sim from "./sim.png";
 import profile from "./profile.jpg";
 import koya from "./koya.png";
+import travel from "./travel.png";
 import expense from "./expense.jpg";
 
 
@@ -63,4 +64,5 @@ export {
     koya,
     profile,
     expense,
+    travel
 };

@@ -11,7 +11,7 @@ const Stats = () => {
     if (!token) {
       history.push("/login");
     } else {
-      fetch('http://192.168.1.92/collage-project/public/api/income', {
+      fetch('http://192.168.1.109/collage-project/public/api/income', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -20,7 +20,7 @@ const Stats = () => {
         .then(json => setIncome(json))
         .catch(e => console.log(e));
 
-        fetch('http://192.168.1.92/collage-project/public/api/expense', {
+        fetch('http://192.168.1.109/collage-project/public/api/expense-total', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -30,8 +30,7 @@ const Stats = () => {
         .catch(e => console.log(e));
     }
   },[history]);
-
-  const total=expense-income;
+  const total=expense.expense-income.income;
 
   return(
   <section className={`${styles.flexCenter} flex-row flex-wrap sm:mb-20 mb-6 sm:mt-10 mt-3  `}>
@@ -40,7 +39,7 @@ const Stats = () => {
           Expense:
         </h4>
         <p className="font-poppins font-semibold xs:text-[40.89px] text-[30.89px] xs:leading-[26.58px] leading-[21.58px] text-white">
-          {expense} IQD
+          {expense.expense} IQD
         </p>
       </div>
       <div className={`flex-1 flex justify-start items-center flex-row m-3`} >
@@ -48,7 +47,7 @@ const Stats = () => {
           Income:
         </h4>
         <p className="font-poppins font-semibold xs:text-[40.89px] text-[30.89px] xs:leading-[26.58px] leading-[21.58px] text-white">
-          {income} IQD
+          {income.income} IQD
         </p>
       </div>
       <div className={`flex-1 flex justify-start items-center flex-row m-3`} >

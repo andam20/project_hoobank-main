@@ -23,12 +23,22 @@ var date = curr.toISOString().substring(0,10);
 
 
 const CTA = () => {
+
+
+
   const [text,setText]= useState("hiwaaa");
   const [image,setImage]= useState("");
+  const [category,setCatogory]= useState("");
+  const [date,setDate]= useState("");
   const [price,setPrice]= useState("");
   const [disc,setDisc]= useState("");
   const [lang,setLang] = useState("ara+eng+kur")
 
+
+
+
+
+  
   const handleClick=(e)=>{
     e.preventDefault()
 
@@ -64,64 +74,117 @@ const CTA = () => {
       // console.log(text);
     });
   }
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    const token = localStorage.getItem("token");
+  
+    fetch('http://192.168.1.109/collage-project/public/api/store-expense', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        "category" : category,
+        "amount" : price,
+        "date" : date,
+        "description" : disc,
+      })
+    })
+    .then(response => {
+      if (response.ok) {
+        console.log(response)
+      } else {
+        throw new Error('Failed to submit form');
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      console.log(error.message);
+    });
+  };
+  
+  
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const formData = new FormData();
+  //   formData.append('category', category);
+  //   formData.append('amount', price);
+  //   formData.append('date', date);
+  //   formData.append('description', disc);
+  //   // formData.append('image', image);
+  
+  //   const response = await fetch('http://192.168.1.109/collage-project/public/api/store-expense', {
+  //     method: 'POST',
+  //     body: formData
+  //   });
+  
+  //   if (response.ok) {
+  //     console.log("success")
+  //   } else {
+  //     console.error('Failed to post');
+  //   }
+  // };
   
 return (
 <section className={`${styles.flexCenter} ${styles.marginY} ${styles.padding} sm:flex-row flex-col bg-black-gradient-2 rounded-[20px] box-shadow`}>
 
 
 
-<form onSubmit={(e)=>{
-  e.preventDefault()
-  const formData = {};
-  Object.keys(e.target).forEach(key=>{
-    if (e.target[key].name) {
-      formData[e.target[key].name] = e.target[key].value;
-    }
-  })
-
-//   const requestOptions = {
-//     method: 'POST',
-//     headers: { 'Content-Type': 'application/json' },
-//     body: JSON.stringify(formData)
-// };
-//   fetch("http://192.168.1.92/collage-project/public/api/expense",requestOptions).then(res=>console.log(res))
-}
-  }>
+<form onSubmit={handleSubmit}>
     <div class="mb-6">
         <label htmlFor="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-        <select data-te-select-init class='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block     w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+        <select data-te-select-init class='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block     w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'  onChange={(e)=>setCatogory(e.target.value)} >
         <option selected disabled>Choose a category</option>
           <option
-            value="1"
-            data-te-select-icon="https://tecdn.b-cdn.net/img/Photos/Avatars/avatar-1.webp" >
-            One
+            value="Food">
+            Food
           </option>
           <option
-            value="2"
-            data-te-select-icon="https://tecdn.b-cdn.net/img/Photos/Avatars/avatar-2.webp">
-            Two
+            value="Feul">
+            Feul
           </option>
           <option
-            value="3"
-            data-te-select-icon="https://tecdn.b-cdn.net/img/Photos/Avatars/avatar-3.webp">
-            Three
+            value="Mobile Card">
+            Mobile Card
           </option>
           <option
-            value="4"
-            data-te-select-icon="https://tecdn.b-cdn.net/img/Photos/Avatars/avatar-4.webp">
-            Four
+            value="Car Service">
+            Car Service
           </option>
           <option
-            value="5"
-            data-te-select-icon="https://tecdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp">
-            Five
+            value="Travel">
+            Travel
+          </option>
+          <option
+            value="Transportation">
+            Transportation
+          </option>
+          <option
+            value="Health Care">
+            Health Care
+          </option>
+          <option
+            value="Gift">
+            Gift
+          </option>
+          <option
+            value="Education">
+            Education
+          </option>
+          <option
+            value="Other">
+            Other
           </option>
         </select>
         </div>
     <div class="mb-6">
       
         <label htmlFor="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Discription</label>
-        <textarea name='test' id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" defaultValue={disc} placeholder="Write your discription here..."></textarea>
+        <textarea name='test' id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  onChange={(e)=>setDisc(e.target.value)}  defaultValue={disc} placeholder="Write your discription here..."></textarea>
 
 
     </div>
@@ -129,7 +192,7 @@ return (
       
       <label htmlFor="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
       <div class="relative max-w-sm">
-        <input datepicker datepicker-autohide type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Today" defaultValue={date}></input>
+        <input datepicker datepicker-autohide type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  onChange={(e)=>setDate(e.target.value)}  placeholder="Today" defaultValue={date}></input>
       </div>
 
 
@@ -149,7 +212,7 @@ return (
 
     <div class="relative">
       
-    <input type="text" id="hs-input-with-leading-and-trailing-icon" name="hs-input-with-leading-and-trailing-icon" class="py-3 px-4 pr-16 block w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0000" defaultValue={price}></input>
+    <input type="text" id="hs-input-with-leading-and-trailing-icon" name="hs-input-with-leading-and-trailing-icon" class="py-3 px-4 pr-16 block w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0000"  onChange={(e)=>setPrice(e.target.value)}  defaultValue={price}></input>
     <div class="absolute inset-y-0 right-0 flex items-center pointer-events-none z-20 pr-4">
       <span class="text-gray-500">IQD</span>
     </div>
@@ -174,10 +237,6 @@ return (
     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
 </form>
 
-
-    
-    
-    
     {/* <div className="flex-1 flex flex-col">
       <input type="text" /> 
       <p className={`${styles.paragraph} max-w-[470px] mt-5`}>

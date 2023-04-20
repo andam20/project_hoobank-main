@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { close, koya, menu } from "../assets";
@@ -8,9 +8,27 @@ const Navbar = () => {
   const [active, setActive] = useState(navLinks.title);
   const [toggle, setToggle] = useState(false);
 
+  const [logo, setLogo] = useState([]);
+  useEffect(()=>{
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = '/login';
+    } else {
+      fetch('http://192.168.1.109/collage-project/public/api/company-name', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      
+        .then(response => response.json())
+        .then(json =>setLogo(json))
+        .catch(e => console.log(e));
+    }
+  },[]);
+
   return (
     <nav className="w-full flex py-6 justify-between items-center navbar">
-      <img src={koya} alt="hoobank" className="w-[124px] h-[32px]" />
+      <img src={`http://192.168.1.109/collage-project/public${logo.image_url}`} alt="hoobank" className="w-[124px] h-[32px]" />
 
       <ul className="list-none sm:flex hidden justify-end items-center flex-1">
         {navLinks.map((nav, index) => (
