@@ -12,6 +12,8 @@ import { Calendar } from 'primereact/calendar';
 import { MultiSelect } from 'primereact/multiselect';
 import { Slider } from 'primereact/slider';
 import { Tag } from 'primereact/tag';
+import {feul} from '../assets';
+
 // import { CustomerService } from './service/CustomerService';
 
 //theme
@@ -39,8 +41,8 @@ export default function CustomersDemo() {
     });
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [representatives] = useState([
-        { name: 'Food', image: '' },
-        { name: 'feul', image: '' },
+        { name: 'Food', image: '../src/assets/food.png' },
+        { name: 'Feul', image: '../src/assets/feul.png' },
         { name: 'Mobile Card', image: '' },
         { name: 'Car Service', image: '' },
         { name: 'Travel', image: '' },
@@ -85,15 +87,39 @@ export default function CustomersDemo() {
     //     CustomerService.getCustomersLarge().then((data) => setCustomers(getCustomers(data)));
     // }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+
     useEffect(()=>{
-        fetch('http://192.168.1.92/collage-project/public/api/expense')
-            .then(response => response.json())
-            .then(json => setExpenses(json))
-            .catch(e=>console.log(e))
-    },[])
+        const token = localStorage.getItem("token");
+        if (!token) {
+          window.location.href = '/login';
+        } else {
+          fetch('http://192.168.1.109/collage-project/public/api/expense', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          
+          .then(response => response.json())
+          .then(json => setExpenses(json))
+          .catch(e=>console.log(e))
+        }
+      },[]);
+
+    // useEffect(()=>{
+    //     fetch('http://192.168.1.109/collage-project/public/api/expense' ,{
+    //         headers: {
+    //             Authorization: `Bearer ${token}`,
+    //           },
+    //     })
+    //         .then(response => response.json())
+    //         .then(json => setExpenses(json))
+    //         .catch(e=>console.log(e))
+    // },[])
 
     console.log(expenses)
-    
+
+    // console.log(Object.entries(expenses.expense));
+
 
 
 
@@ -152,11 +178,11 @@ export default function CustomersDemo() {
     };
 
     const representativeBodyTemplate = (rowData) => {
-        const representative = rowData.representative;
+        const representative = rowData.category;
 
         return (
             <div className="flex align-items-center gap-2">
-                {/* <img alt={representative.name} src={`https://primefaces.org/cdn/primereact/images/avatar/${representative.image}`} width="32" /> */}
+                <img src={feul} width="32" />
                 <span>{representative}</span>
             </div>
         );
@@ -189,7 +215,7 @@ export default function CustomersDemo() {
     };
 
     const balanceBodyTemplate = (rowData) => {
-        return formatCurrency(rowData.ammount);
+        return formatCurrency(rowData.amount);
     };
 
     const balanceFilterTemplate = (options) => {
@@ -209,7 +235,7 @@ export default function CustomersDemo() {
     };
 
     const pbBodyTemplate = (rowData) => {
-        return <Tag value={rowData.status} severity={getSeverity2(rowData.status)} />;
+        return <Tag value={rowData.paid_back} severity={getSeverity2(rowData.paid_back)} />;
     };
 
     const pbFilterTemplate = (options) => {
@@ -237,7 +263,7 @@ export default function CustomersDemo() {
                 <Column field='category' header="Category" sortable sortField="representative.name" filterField="representative" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }}
                     style={{ minWidth: '14rem' }} body={representativeBodyTemplate} filter filterElement={representativeFilterTemplate} />
                 <Column field="description" header="Description" sortable filter filterPlaceholder="Search by name" style={{ minWidth: '14rem' }} />
-                <Column field="balance" header="Ammount" sortable dataType="numeric" style={{ minWidth: '12rem' }} body={balanceBodyTemplate} filter filterElement={balanceFilterTemplate} />
+                <Column field="amount" header="Ammount" sortable dataType="numeric" style={{ minWidth: '12rem' }} body={balanceBodyTemplate} filter filterElement={balanceFilterTemplate} />
                 <Column field="status" header="Status" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
                 <Column field="paid_back" header="Paid Back?" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={pbBodyTemplate} filter filterElement={pbFilterTemplate} />                
                 <Column field="created_at" header="Date" sortable filterField="date" dataType="date" style={{ minWidth: '12rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
