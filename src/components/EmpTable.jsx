@@ -93,7 +93,7 @@ export default function CustomersDemo() {
         if (!token) {
           window.location.href = '/login';
         } else {
-          fetch('http://192.168.1.109/collage-project/public/api/expense', {
+          fetch('http://localhost:8000/api/expense', {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -102,6 +102,7 @@ export default function CustomersDemo() {
           .then(response => response.json())
           .then(json => setExpenses(json))
           .catch(e=>console.log(e))
+          .catch(error=> console.log(error))
         }
       },[]);
 

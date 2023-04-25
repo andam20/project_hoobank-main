@@ -12,52 +12,149 @@ const AccountEdit = () => {
 
 
 
-    const [data, setData] = useState([]);
+  const [first_name, setfirst_name] = useState();
+  const [last_name, setlast_name] = useState();
+  const [email, setEmail] = useState();
+  const [phone, setphone] = useState();
+  const [password, setPassword] = useState();
+
+    
+    const [data,setData]=useState([]);
   useEffect(()=>{
     const token = localStorage.getItem("token");
     if (!token) {
       window.location.href = 'http://127.0.0.1:5173/login';
     } else {
-      fetch(`http://192.168.1.109/collage-project/public/api/employee-profile `, {
+      fetch(`http://localhost:8000/api/employee-profile `, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       
         .then(response => response.json())
-        .then(json =>setData(json.employee_profile))
+        .then(json =>
+        setData(json.employee_profile)
+        )
         .catch(e => console.log(e));
     }
   },[]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const token = localStorage.getItem("token");
-    if (!token) {
-      window.location.href = "http://127.0.0.1:5173/login";
-    } else {
-      fetch("http://192.168.1.109/collage-project/public/api/employee-profile", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          first_name: first_name,
-          last_name: last_name,
-          email: email,
-          phone_no: phone,
-          password: password,
-        }),
-      })
-        .then((response) => response.json())
-        .then((json) => {
-          console.log(json);
-          // Do something with response, such as show success message or redirect to another page
-        })
-        .catch((e) => console.log(e));
+
+
+  useEffect(() => {
+    if (data != null) {
+      setfirst_name(data.first_name);
+      setlast_name(data.last_name);
+      setEmail(data.email);
+      setPassword(data.password);
+      setphone(data.phone_no);
     }
-  };
+  }, [data]);
+
+
+
+
+
+
+
+
+
+
+    // fetch("http://localhost:8000/api/update-employee", {
+    //       method: "PUT",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //       body: JSON.stringify({
+    //         first_name: first_name,
+    //         last_name: last_name,
+    //         email: email,
+    //         phone_no: phone,
+    //         password: password
+    //       }),
+    //     })
+    //       .then((response) => {
+    //         if (response.ok) {
+    //           return response.json();
+    //         } else {
+    //           throw new Error("Network response was not ok");
+    //         }
+    //       })
+    //       .then((json) => {
+    //         console.log(json);
+    //         // Do something with response, such as show success message or redirect to another page
+    //       })
+    //       .catch((error) => console.error("Error:", error));
+    const handleSubmit = (e) => {
+      e.preventDefault();
+    
+      const token = localStorage.getItem("token");
+      // if (!token) {
+      //   window.location.href = "http://127.0.0.1:5173/login";
+      // } else {
+        var raw = JSON.stringify({
+          "first_name": first_name,
+          "last_name": last_name,
+          "phone_no": phone,
+          "email": email,
+          "password": password
+        });
+        
+        var requestOptions = {
+          method: 'PUT',
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: raw,
+          redirect: 'follow'
+        };
+        
+        fetch("http://localhost:8000/api/update-employee", requestOptions)
+          .then(response => response.text())
+          .then(result => console.log(result))
+          .catch(error => console.log('error', error));
+      // }
+    };
+
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  
+  //   const token = localStorage.getItem("token");
+  //   if (!token) {
+  //     window.location.href = "http://127.0.0.1:5173/login";
+  //   } else {
+  //     fetch("http://localhost:8000/api/update-employee", {
+  //       method: "PUT",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //       body: JSON.stringify({
+  //         first_name: first_name,
+  //         last_name: last_name,
+  //         email: email,
+  //         phone_no: phone,
+  //         password: password
+  //       }),
+  //     })
+  //       .then((response) => {
+  //         if (response.ok) {
+  //           return response.json();
+  //         } else {
+  //           throw new Error("Network response was not ok");
+  //         }
+  //       })
+  //       .then((json) => {
+  //         console.log(json);
+  //         // Do something with response, such as show success message or redirect to another page
+  //       })
+  //       .catch((error) => console.error("Error:", error));
+  //   }
+  // };
+  
   
 
 return(
@@ -89,17 +186,10 @@ return(
         <input type="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="john.doe@company.com" defaultValue={data.email} onChange={(e)=>setEmail(e.target.value)} required></input>
     </div> 
     <div class="mb-6">
-        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Old Password</label>
-        <input type="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••"  required></input>
-    </div> 
-    <div class="mb-6">
         <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">New Password</label>
         <input type="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" onChange={(e)=>setPassword(e.target.value)} required></input>
     </div> 
-    <div class="mb-6">
-        <label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm password</label>
-        <input type="password" id="confirm_password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required></input>
-    </div> 
+  
     <div class="flex items-start mb-6">
         <div class="flex items-center h-5">
         <input id="remember" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800" required></input>

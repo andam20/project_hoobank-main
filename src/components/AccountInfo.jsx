@@ -19,7 +19,7 @@ const AccountInfo = () => {
     if (!token) {
       window.location.href = '/login';
     } else {
-      fetch(`http://192.168.1.109/collage-project/public/api/employee-profile `, {
+      fetch(`http://localhost:8000/api/employee-profile `, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -54,7 +54,7 @@ return(
 
     <div className={`${styles.flexCenter} sm:ml-10 ml-0 sm:mt-0 mt-10`}>
       
-    <img src={`http://192.168.1.109/collage-project/public${data.image_url}`} class='rounded-full w-80'/>
+    <img src={`http://localhost:8000${data.image_url}`} class='rounded-full w-80'/>
     </div>
   </section>
 );

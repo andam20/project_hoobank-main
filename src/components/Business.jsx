@@ -60,7 +60,7 @@ const navigate = useNavigate();
     if (!token) {
       window.location.href = '/login';
     } else {
-      fetch('http://192.168.1.109/collage-project/public/api/last-four', {
+      fetch('http://localhost:8000/api/last-four', {
         headers: {
           Authorization: `Bearer ${token}`,
         },

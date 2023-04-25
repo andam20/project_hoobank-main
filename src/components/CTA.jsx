@@ -81,7 +81,7 @@ const CTA = () => {
   
     const token = localStorage.getItem("token");
   
-    fetch('http://192.168.1.109/collage-project/public/api/store-expense', {
+    fetch('http://localhost:8000/api/store-expense', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -14,7 +14,7 @@ const Navbar = () => {
     if (!token) {
       window.location.href = '/login';
     } else {
-      fetch('http://192.168.1.109/collage-project/public/api/company-name', {
+      fetch('http://localhost:8000/api/company-name', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -28,7 +28,7 @@ const Navbar = () => {
 
   return (
     <nav className="w-full flex py-6 justify-between items-center navbar">
-      <img src={`http://192.168.1.109/collage-project/public${logo.image_url}`} alt="hoobank" className="w-[124px] h-[32px]" />
+      <img src={`http://localhost:8000${logo.image_url}`} alt="hoobank" className="w-[124px] h-[32px]" />
 
       <ul className="list-none sm:flex hidden justify-end items-center flex-1">
         {navLinks.map((nav, index) => (
