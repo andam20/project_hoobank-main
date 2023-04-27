@@ -30,6 +30,12 @@ import profile from "./profile.jpg";
 import koya from "./koya.png";
 import travel from "./travel.png";
 import expense from "./expense.jpg";
+import Gift from "./Gift.png";
+import MobileCard from "./Mobile Card.png";
+import CarService from "./Car Service.png";
+import Transportation from "./Transportation.png";
+import HealthCare from "./Health Care.png";
+import Education from "./Education.png";
 
 
 export {
@@ -64,5 +70,12 @@ export {
     koya,
     profile,
     expense,
-    travel
+    travel,
+    Gift,
+    MobileCard,
+    CarService,
+    Transportation,
+    HealthCare,
+    Education,
+
 };

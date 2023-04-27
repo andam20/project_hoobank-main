@@ -48,7 +48,7 @@ const ExpenseInfo = () => {
       .then(response => {
         if (response.ok) {
           console.log(response)
-          window.location.href = "http://localhost:8000";
+          window.location.href = "http://127.0.0.1:5173/";
         }else{
           console.log(response)
         }
@@ -78,13 +78,13 @@ return(
         {data.status}
         </p>
       </div>
-      <div className={` rounded-[5px]  border ${data.paid_back !== "Payed Back" ? "border-red-500" : "border-green-500"}  opacity-75`}>
-        <p className={`font-poppins font-normal text-dimWhite text-[13px] m-1 ${data.paid_back!== "Payed Back" ? "text-red-500" : "text-green-500"} `}>
+      <div className={` rounded-[5px]  border ${data.paid_back !== "Paid Back" ? "border-red-500" : "border-green-500"}  opacity-75`}>
+        <p className={`font-poppins font-normal text-dimWhite text-[13px] m-1 ${data.paid_back!== "Paid Back" ? "text-red-500" : "text-green-500"} `}>
           {data.paid_back}
         </p>
       </div>
       </div>
-      <button onClick={handleDelete} type="submit"  className="p-2 px-5 text-[25px] mt-5 bg-red-gradient text-gray-900 rounded-[10px] font-semibold f">Delelte</button>
+      <button onClick={handleDelete} type="submit" className="p-2 px-5 text-[25px] mt-5 bg-red-gradient text-gray-900 rounded-[10px] font-semibold f">Delete</button>
 
     </div>
 
